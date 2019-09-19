@@ -14,9 +14,6 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.inventory.meta.tags.ItemTagType;
-import org.bukkit.material.MaterialData;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -224,22 +221,13 @@ public class ItemBuilder {
     }
 
     /**
-     * Set custom model data for the items being built.
-     * @param customModelData an integer that may be associated client side with a custom item model
-     * @return a new ItemBuilder
-     */
-    public ItemBuilder customModelData(Integer customModelData) {
-        return changeMeta(meta -> meta.setCustomModelData(customModelData));
-    }
-
-    /**
      * Change the persistent data of the ItemMeta of the ItemStack being built.
      * @param consumer the PersistentDataContainer consumer
      * @return a new ItemBuilder
-     * @see #persistentData(NamespacedKey, PersistentDataType, Object)
+     * @see #persistentData(NamespacedKey, ItemTagType, Object)
      */
-    public ItemBuilder changePersistentData(Consumer<? super PersistentDataContainer> consumer) {
-        return changeMeta(meta -> consumer.accept(meta.getPersistentDataContainer()));
+    public ItemBuilder changePersistentData(Consumer<? super CustomItemTagContainer> consumer) {
+        return changeMeta(meta -> consumer.accept(meta.getCustomTagContainer()));
     }
 
     /**
@@ -261,120 +249,120 @@ public class ItemBuilder {
      * @see #persistentData(NamespacedKey, long[])
      * @see #persistentData(NamespacedKey, short)
      * @see #persistentData(NamespacedKey, String)
-     * @see #persistentData(NamespacedKey, PersistentDataContainer)
+     * @see #persistentData(NamespacedKey, CustomItemTagContainer)
      */
-    public <T, Z> ItemBuilder persistentData(NamespacedKey key, PersistentDataType<T, Z> type, Z value) {
-        return changePersistentData(data -> data.set(key, type, value));
+    public <T, Z> ItemBuilder persistentData(NamespacedKey key, ItemTagType<T, Z> type, Z value) {
+        return changePersistentData(data -> data.setCustomTag(key, type, value));
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the byte type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the byte type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
     public ItemBuilder persistentData(NamespacedKey key, byte value) {
-        return persistentData(key, PersistentDataType.BYTE, value);
+        return persistentData(key, ItemTagType.BYTE, value);
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the byte[] type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the byte[] type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
     public ItemBuilder persistentData(NamespacedKey key, byte[] value) {
-        return persistentData(key, PersistentDataType.BYTE_ARRAY, value);
+        return persistentData(key, ItemTagType.BYTE_ARRAY, value);
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the double type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the double type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
     public ItemBuilder persistentData(NamespacedKey key, double value) {
-        return persistentData(key, PersistentDataType.DOUBLE, value);
+        return persistentData(key, ItemTagType.DOUBLE, value);
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the float type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the float type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
     public ItemBuilder persistentData(NamespacedKey key, float value) {
-        return persistentData(key, PersistentDataType.FLOAT, value);
+        return persistentData(key, ItemTagType.FLOAT, value);
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the int type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the int type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
     public ItemBuilder persistentData(NamespacedKey key, int value) {
-        return persistentData(key, PersistentDataType.INTEGER, value);
+        return persistentData(key, ItemTagType.INTEGER, value);
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the int[] type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the int[] type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
     public ItemBuilder persistentData(NamespacedKey key, int[] value) {
-        return persistentData(key, PersistentDataType.INTEGER_ARRAY, value);
+        return persistentData(key, ItemTagType.INTEGER_ARRAY, value);
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the long type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the long type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
     public ItemBuilder persistentData(NamespacedKey key, long value) {
-        return persistentData(key, PersistentDataType.LONG, value);
+        return persistentData(key, ItemTagType.LONG, value);
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the long[] type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the long[] type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
     public ItemBuilder persistentData(NamespacedKey key, long[] value) {
-        return persistentData(key, PersistentDataType.LONG_ARRAY, value);
+        return persistentData(key, ItemTagType.LONG_ARRAY, value);
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the short type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the short type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
     public ItemBuilder persistentData(NamespacedKey key, short value) {
-        return persistentData(key, PersistentDataType.SHORT, value);
+        return persistentData(key, ItemTagType.SHORT, value);
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the String type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the String type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
     public ItemBuilder persistentData(NamespacedKey key, String value) {
-        return persistentData(key, PersistentDataType.STRING, value);
+        return persistentData(key, ItemTagType.STRING, value);
     }
 
     /**
-     * Specialised case of {@link #persistentData(NamespacedKey, PersistentDataType, Object)} for the PersistentDataContainer type.
+     * Specialised case of {@link #persistentData(NamespacedKey, ItemTagType, Object)} for the PersistentDataContainer type.
      * @param key the key of the data
      * @param value the value of the data
      * @return a new ItemBuilder
      */
-    public ItemBuilder persistentData(NamespacedKey key, PersistentDataContainer value) {
-        return persistentData(key, PersistentDataType.TAG_CONTAINER, value);
+    public ItemBuilder persistentData(NamespacedKey key, CustomItemTagContainer value) {
+        return persistentData(key, ItemTagType.TAG_CONTAINER, value);
     }
 
     // deprecated CustomTagContainer variants of persistentData
@@ -387,7 +375,7 @@ public class ItemBuilder {
      * @param <T> the tag's primitive type
      * @param <Z> the tag's complex type
      * @return a new ItemBuilder
-     * @deprecated Use {@link #persistentData(NamespacedKey, PersistentDataType, Object)} instead.
+     * @deprecated Use {@link #persistentData(NamespacedKey, ItemTagType, Object)} instead.
      */
     @Deprecated
     public <T, Z> ItemBuilder tag(NamespacedKey key, ItemTagType<T, Z> type, Z value) {
@@ -519,7 +507,7 @@ public class ItemBuilder {
      * @param key the key of the tag
      * @param value the value of the tag
      * @return a new ItemBuilder
-     * @deprecated Use {@link #persistentData(NamespacedKey, PersistentDataContainer)} instead.
+     * @deprecated Use {@link #persistentData(NamespacedKey, CustomItemTagContainer)} instead.
      */
     @Deprecated
     public ItemBuilder tag(NamespacedKey key, CustomItemTagContainer value) {

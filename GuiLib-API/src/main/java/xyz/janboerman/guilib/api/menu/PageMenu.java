@@ -502,10 +502,8 @@ public class PageMenu<P extends Plugin> extends MenuHolder<P> implements MenuHol
             return InventoryType.CHEST;
         }
 
-        @Override
-        public String getTitle() {
+        public String getOriginalTitle() {
             return original.getTitle();
         }
     }
-
 }
